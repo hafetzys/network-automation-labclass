@@ -17,7 +17,7 @@
       cisco.ios.ios_facts:
         gather_subset: all
 
-    # Print hostname and OS version collected by ios_facts
+    # Print hostname and OS version collected by ios_factss
     - name: Show hostname and OS version
       debug:
         msg: "Hostname: {{ ansible_net_hostname | default('unknown') }}, 
