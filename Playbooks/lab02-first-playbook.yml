@@ -1,0 +1,24 @@
+# Playbook to gather IOS facts and print hostname/version
+- name: Gather IOS facts and print hostname/version
+  hosts: routers            # target the 'routers' group in the inventory
+  connection: network_cli   # use network CLI transport
+  become: false             # do not escalate privileges
+  gather_facts: false       # disable Ansible's default (local) fact gathering
+
+  vars:
+    ansible_network_os: ios # ensure network modules use the IOS platform
+
+  collections:
+    - cisco.ios
+
+  tasks:
+    # Use cisco.ios.ios_facts to collect all available facts from the device
+    - name: Gather ios facts (all)
+      cisco.ios.ios_facts:
+        gather_subset: all
+
+    # Print hostname and OS version collected by ios_facts
+    - name: Show hostname and OS version
+      debug:
+        msg: "Hostname: {{ ansible_net_hostname | default('unknown') }}, 
+            OS version: {{ ansible_net_version | default('unknown') }}"
